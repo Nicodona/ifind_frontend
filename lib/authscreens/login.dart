@@ -21,7 +21,7 @@ class _LoginState extends State<Login> {
           children: [
             Container(
               color: Colors.transparent,
-              height: 200,
+              height: 100,
             ),
             Container(
               height: 900,
@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
                 border: Border.all(color: Colors.transparent)
               ),
               child: Column(
-               // crossAxisAlignment: CrossAxisAlignment.stretch,
+               crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
 
@@ -63,13 +63,15 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: 55,
                                 child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.brown[50]
+                                  ),
                                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                                   child: TextFormField(
                                     obscureText: false,
                                     controller: emailController,
-                                    decoration:  InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.brown[50],
+                                    decoration:  const InputDecoration(
                                       border: InputBorder.none,
                                       hintText: 'Enter Email',
                                     ),
@@ -81,13 +83,17 @@ class _LoginState extends State<Login> {
                               SizedBox(
                                 height: 55,
                                 child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.brown[50]
+                                  ),
                                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                                   child: TextFormField(
                                     obscureText: true,
                                     controller: passwordController,
-                                    decoration:  InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.brown[50],
+                                    decoration:  const InputDecoration(
+                                      // filled: true,
+                                      // fillColor: Colors.brown[50],
                                       border: InputBorder.none,
                                       hintText: 'Enter password',
                                     ),
@@ -117,26 +123,29 @@ class _LoginState extends State<Login> {
 
 
                               SizedBox(
-                                  height: 40,
+                                  height: 55,
                                   width: 40,
                                   // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // login(emailController.text.toString(), passwordController.text.toString());
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.teal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: ElevatedButton(
 
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
+                                      onPressed: () {
+                                        // login(emailController.text.toString(), passwordController.text.toString());
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.teal,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                        ),
+
                                       ),
-
+                                      child: const Text('Login',
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold
+                                        ),),
                                     ),
-                                    child: const Text('Login',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold
-                                      ),),
                                   )
                               ),
 
