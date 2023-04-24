@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ifind_backend/custom/color.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _SignupState extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: background,
       body:  SingleChildScrollView(
         child: Column(
           children: [
@@ -182,7 +183,7 @@ class _SignupState extends State<Signup> {
                                           ),
 
                                         ),
-                                        child: const Text('Login',
+                                        child: const Text('Signup',
                                           style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold
