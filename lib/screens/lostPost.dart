@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ifind_backend/custom/color.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Post extends StatefulWidget {
   const Post({Key? key}) : super(key: key);
@@ -10,10 +12,41 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController regionController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController professionController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController mentionController = TextEditingController();
+  TextEditingController datefoundController = TextEditingController();
+  TextEditingController placefoundController = TextEditingController();
+
+  File? _image;
+
+  final ImagePicker picker = ImagePicker();
+
+  //we can upload image from camera or from gallery based on parameter
+  Future<void> _getImage() async {
+    final imagePicker = ImagePicker();
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
+  }
+  Future<void> _getCamera() async {
+    final imagePicker = ImagePicker();
+    final image = await imagePicker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    }
+  }
+
+  List<String> options = ['Animal', 'Bag', 'Cloth', 'Device','Document', 'FoodStuff', 'Gadget','House Equipment', 'Identity Card', 'Man', 'Person', 'Phone'];
+
+  String _value='Document';
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -29,7 +62,7 @@ class _PostState extends State<Post> {
           children: [
             Container(
               color: Colors.transparent,
-              height: 85.0,
+              height: 55.0,
             ),
             Container(
               height: 700,
@@ -91,18 +124,30 @@ class _PostState extends State<Post> {
                                             color: Colors.brown[50]
                                         ),
                                         padding: const EdgeInsets.fromLTRB(10, 10, 30, 0),
-                                        child: TextFormField(
-                                          obscureText: true,
-                                          controller: professionController,
-                                          decoration:  const InputDecoration(
-                                            // filled: true,
-                                            // fillColor: Colors.brown[50],
-                                              border: InputBorder.none,
-                                              hintText: 'Commercial Avenue Bamenda',
-                                              hintStyle: TextStyle(
-                                                  color: Colors.grey
-                                              )
+                                        child: DropdownButton(
+
+                                          value: _value,
+
+                                          items: options.map((e) =>
+
+                                              DropdownMenuItem(
+
+                                                child: Text(e.toString()), value: e.toString(),)).toList(),
+
+                                          onChanged: (newValue) {
+
+                                            setState(() {
+
+                                              _value = newValue.toString() ;
+
+                                            });
+
+                                          },
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
                                           ),
+                                          borderRadius: BorderRadius.all(Radius.circular(12)),
                                         ),
                                       ),
                                     ),
@@ -129,7 +174,7 @@ class _PostState extends State<Post> {
                                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                                         child: TextFormField(
                                           obscureText: false,
-                                          controller: nameController,
+                                          controller: descriptionController,
                                           textAlign: TextAlign.center,
                                           minLines: 1,
                                           maxLines: 5,
@@ -147,7 +192,6 @@ class _PostState extends State<Post> {
                                     ),
 
 
-                                    SizedBox(height: 20,),
                                     const Padding(padding:
                                     EdgeInsets.all(8.0),
                                       child: Text('Mention',
@@ -171,7 +215,7 @@ class _PostState extends State<Post> {
                                           minLines: 1,
                                           maxLines: 5,
                                           obscureText: false,
-                                          controller: regionController,
+                                          controller: mentionController,
                                           decoration:  const InputDecoration(
                                             border: InputBorder.none,
                                             hintText: 'Please Provide any information found on objects this information is hidden from users',
@@ -183,7 +227,7 @@ class _PostState extends State<Post> {
                                       ),
                                     ),
 
-                                    SizedBox(height: 20,),
+
                                     const Padding(padding:
                                     EdgeInsets.all(8.0),
                                       child: Text('Date found',
@@ -205,7 +249,7 @@ class _PostState extends State<Post> {
                                         child: TextFormField(
                                           textAlign: TextAlign.left,
                                           obscureText: true,
-                                          controller: phoneController,
+                                          controller: datefoundController,
                                           decoration:  const InputDecoration(
                                             // filled: true,
                                             // fillColor: Colors.brown[50],
@@ -219,7 +263,7 @@ class _PostState extends State<Post> {
                                       ),
                                     ),
 
-                                    SizedBox(height: 15.0,),
+
                                     const Padding(padding:
                                     EdgeInsets.all(8.0),
                                       child: Text('place found',
@@ -240,7 +284,7 @@ class _PostState extends State<Post> {
                                         padding: const EdgeInsets.fromLTRB(10, 10, 30, 0),
                                         child: TextFormField(
                                           obscureText: true,
-                                          controller: professionController,
+                                          controller: placefoundController,
                                           decoration:  const InputDecoration(
                                             // filled: true,
                                             // fillColor: Colors.brown[50],
@@ -266,9 +310,43 @@ class _PostState extends State<Post> {
                     ),
                   ),
 
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.all(Radius.circular(25))
+                          ),
+                          child: IconButton(
+                            onPressed:  _getImage,
+                            icon: Icon(Icons.add_a_photo),
+                            iconSize: 35,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 70),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.teal,
+                              borderRadius: BorderRadius.all(Radius.circular(25))
+                            ),
+                            child: IconButton(
+                              onPressed: _getCamera,
+                              icon: Icon(Icons.camera_alt_outlined),
+                              iconSize: 35,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
+
                   Container(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 230.0, 8.0),
                       child: SizedBox(
                           width: 100,
                           height: 50,
@@ -285,7 +363,7 @@ class _PostState extends State<Post> {
                               ),
 
                             ),
-                            child: const Text('Save',
+                            child: const Text('Post',
                               style: TextStyle(
                                   fontSize: 25,
                                   fontWeight: FontWeight.bold
