@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ifind_backend/custom/borderBox.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -15,16 +16,22 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      // bottomNavigationBar: BottomNavigationBar(
+      //   backgroundColor: Colors.teal,
+      //   items: [
+      //   ],
+      //
+      // ),
       backgroundColor: Colors.teal,
       body:  SingleChildScrollView(
         child: Column(
           children: [
             Container(
               color: Colors.transparent,
-              height: 100,
+              height: 85.0,
             ),
             Container(
-              height: 900,
+              height: 700,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
@@ -36,7 +43,7 @@ class _ProfileState extends State<Profile> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 155),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 155),
                     child: Container(
                       child: const Text("Profile",
                         style: TextStyle(
@@ -46,9 +53,26 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
+
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      child: BorderBox(
+                        width: 110,
+                        height: 120,
+                        child: IconButton(
+                          onPressed: ()=>{},
+                          icon: Icon(Icons.add_a_photo,
+                          size: 50,
+                          ),
+                        ),
+                      ),
+
+                    ),
                   ),
                   Container(
-                    child: Padding(padding: const EdgeInsets.fromLTRB(8.0, 8.0, 80.0, 0.0),
+                    child: Padding(padding: const EdgeInsets.fromLTRB(8.0, 0.0, 80.0, 0.0),
                       child: Form(
                         child: Container(
                             width: 360,
