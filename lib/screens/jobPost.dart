@@ -347,6 +347,7 @@ class _JobPostState extends State<JobPost> {
                           child: ElevatedButton(
 
                             onPressed: () {
+                              Navigator.pop(context);
                               // login(emailController.text.toString(), passwordController.text.toString());
                             },
                             style: ElevatedButton.styleFrom(

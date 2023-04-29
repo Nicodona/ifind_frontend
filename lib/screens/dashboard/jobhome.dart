@@ -26,9 +26,13 @@ class _FindJobState extends State<FindJob> {
         backgroundColor: Colors.white,
 
         splashColor: Colors.teal,
-        onPressed: () => {},
+        onPressed: () => {
+          Navigator.pushNamed(context, '/postJob')
+        },
         child: IconButton(
-          onPressed: () => {},
+          onPressed: () => {
+            Navigator.pushNamed(context, '/postJob')
+          },
           icon: Icon(Icons.add),
           color: Colors.teal,
         ),
@@ -223,7 +227,7 @@ class _FindJobState extends State<FindJob> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.all(
                                   Radius.circular(25)),
-                              child: Image.asset('assets/images/bag.jpg',
+                              child: Image.asset('assets/images/building.jpeg',
                               ),
                             ),
                           ),

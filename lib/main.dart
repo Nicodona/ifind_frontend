@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ifind_backend/authscreens/login.dart';
 import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
+import 'package:ifind_backend/screens/dashboard/chats.dart';
+import 'package:ifind_backend/screens/dashboard/job_details.dart';
 import 'package:ifind_backend/screens/dashboard/jobhome.dart';
 import 'package:ifind_backend/screens/jobPost.dart';
 import 'package:ifind_backend/screens/lostPost.dart';
@@ -21,7 +23,10 @@ void main() {
       '/postlost': (context) => Post(),
       '/postJob': (context) => JobPost(),
       '/found': (context) => Missing(),
-      '/': (context) => FindJob(),
+      '/jobs': (context) => FindJob(),
+      '/notify': (context) => Notify(),
+      '/': (context) => DetailJob(),
+
 
     },
   ));
