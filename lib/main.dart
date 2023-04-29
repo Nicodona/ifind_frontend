@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ifind_backend/authscreens/login.dart';
 import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
+import 'package:ifind_backend/screens/dashboard/jobhome.dart';
 import 'package:ifind_backend/screens/jobPost.dart';
 import 'package:ifind_backend/screens/lostPost.dart';
 import 'package:ifind_backend/screens/profile_upload.dart';
+import 'package:ifind_backend/screens/dashboard/home.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -16,7 +19,9 @@ void main() {
       '/profile': (context) => Profile(),
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
-      '/': (context) => JobPost(),
+      '/postJob': (context) => JobPost(),
+      '/found': (context) => Missing(),
+      '/': (context) => FindJob(),
 
     },
   ));
