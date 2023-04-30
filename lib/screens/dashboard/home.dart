@@ -190,7 +190,7 @@ class _MissingState extends State<Missing> {
                 Container(
                   child:  TextButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/');
+                      Navigator.pushNamed(context, '/jobs');
                     },
                     child: const Text('Hot Jobs',
                   style: TextStyle(

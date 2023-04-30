@@ -3,8 +3,10 @@ import 'package:ifind_backend/authscreens/login.dart';
 import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
 import 'package:ifind_backend/screens/dashboard/chats.dart';
+import 'package:ifind_backend/screens/dashboard/notify.dart';
 import 'package:ifind_backend/screens/dashboard/job_details.dart';
 import 'package:ifind_backend/screens/dashboard/jobhome.dart';
+import 'package:ifind_backend/screens/dashboard/settings.dart';
 import 'package:ifind_backend/screens/jobPost.dart';
 import 'package:ifind_backend/screens/lostPost.dart';
 import 'package:ifind_backend/screens/profile_upload.dart';
@@ -22,10 +24,12 @@ void main() {
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
       '/postJob': (context) => JobPost(),
-      '/': (context) => Missing(),
+      '/home': (context) => Missing(),
       '/jobs': (context) => FindJob(),
       '/notify': (context) => Notify(),
       '/det_job': (context) => DetailJob(),
+      '/chats': (context) => Chat(),
+      '/': (context) => Setting(),
 
 
     },
