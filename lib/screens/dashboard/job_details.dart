@@ -43,8 +43,8 @@ class _DetailJobState extends State<DetailJob> {
                   // Text('${itemData['itemname']}', style: const TextStyle(color: COLOR_BLACK, fontSize: 20, fontWeight: FontWeight.w700,),),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Text('this item was found at commercial avenue', style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600,)),
+                    children: const [
+                    Text('this item was found at commercial avenue', style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w600,)),
                     Text('some text here'),
                       // Text(' ${itemData['author']} found ${itemData['amount']} ${itemData['itemname']}', style: const TextStyle(color: COLOR_GREY, fontSize: 12, fontWeight: FontWeight.w600,),),
                       // Text(' at ${itemData['location']} posted today', style: const TextStyle(color: COLOR_GREY, fontSize: 11, fontWeight: FontWeight.w600,),)

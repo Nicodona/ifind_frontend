@@ -22,10 +22,10 @@ void main() {
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
       '/postJob': (context) => JobPost(),
-      '/found': (context) => Missing(),
+      '/': (context) => Missing(),
       '/jobs': (context) => FindJob(),
       '/notify': (context) => Notify(),
-      '/': (context) => DetailJob(),
+      '/det_job': (context) => DetailJob(),
 
 
     },
