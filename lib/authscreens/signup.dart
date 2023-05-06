@@ -20,6 +20,7 @@ class _SignupState extends State<Signup> {
   bool _isloading = false;
 
   void signup(String email, username, password, confirm) async {
+
     if (username=="" || email=="" || password=="" || confirm==""){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
@@ -34,7 +35,8 @@ class _SignupState extends State<Signup> {
       ),
         backgroundColor: Colors.grey,
       ));
-    } else if(password != confirm){
+    }
+    else if(password != confirm){
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
         child: Text(
@@ -56,18 +58,18 @@ class _SignupState extends State<Signup> {
             body: {
               'email': email,
               'username': username,
-              'password': password,
+              'password': password
             }
         );
 
         var data = jsonDecode(response.body.toString());
-        if (data['status'] == 200) {
-          print('login successful');
+        if (response.statusCode == 200) {
+          print('register successful');
         } else if(data['status']==400){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
             child: Text(
-              "wrong credentials",
+              "account exist",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -79,6 +81,7 @@ class _SignupState extends State<Signup> {
           ));
         }
       } catch (e) {
+        print(e.toString());
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           child: Text(
@@ -268,7 +271,7 @@ class _SignupState extends State<Signup> {
                                           setState(() {
                                             _isloading = true;
                                           });
-                                          signup(emailController.text.toString(),usernameController.text.toString, passwordController.text.toString(),confirmPasswordController.text.toString());
+                                          signup(emailController.text.toString(),usernameController.text.toString(), passwordController.text.toString(),confirmPasswordController.text.toString());
                                         },
                                         style: ElevatedButton.styleFrom(
                                           primary: Colors.teal,
