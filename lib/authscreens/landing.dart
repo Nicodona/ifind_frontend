@@ -36,6 +36,7 @@ class Landing extends StatelessWidget {
                 child: ElevatedButton(
 
                   onPressed: () {
+                    Navigator.pushNamed(context, '/login');
                     // login(emailController.text.toString(), passwordController.text.toString());
                   },
                   style: ElevatedButton.styleFrom(
@@ -43,7 +44,6 @@ class Landing extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-
                   ),
                   child: const Text('Login',
                     style: TextStyle(
@@ -62,6 +62,7 @@ class Landing extends StatelessWidget {
                   child: ElevatedButton(
 
                     onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
                       // login(emailController.text.toString(), passwordController.text.toString());
                     },
                     style: ElevatedButton.styleFrom(

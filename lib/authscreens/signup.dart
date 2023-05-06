@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:ifind_backend/custom/color.dart';
 
 class Signup extends StatefulWidget {
@@ -14,10 +15,24 @@ class _SignupState extends State<Signup> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void signup(email, username, password, confirm)async{
+    try{
+      Response response = await post(
+        Uri.parse(""),
+        body: {
+          'email':email,
+          'username': username,
+          'password': password
+        }
+      )
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background,
+      backgroundColor: Colors.teal,
       body:  SingleChildScrollView(
         child: Column(
           children: [
@@ -145,7 +160,7 @@ class _SignupState extends State<Signup> {
                                 ),
                                 SizedBox(height: 20,),
                                 Row(
-                                  children: const <Widget>[
+                                  children:  <Widget>[
                                     SizedBox(
 
                                       width: 40,
@@ -155,11 +170,16 @@ class _SignupState extends State<Signup> {
                                         style: TextStyle(color: Colors.black,
                                           fontSize: 16.0,
                                         )),
-                                    Text("SignUp",
-                                        style: TextStyle(color: Colors.black,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold
-                                        ))
+                                    TextButton(
+                                      onPressed: () => {
+                                      Navigator.pushNamed(context, '/login')
+                                      },
+                                      child: Text("Login",
+                                          style: TextStyle(color: Colors.black,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold
+                                          )),
+                                    )
                                   ], //<Widget>[]
                                 ),
                                 SizedBox(height: 20,),
@@ -174,7 +194,7 @@ class _SignupState extends State<Signup> {
                                       child: ElevatedButton(
 
                                         onPressed: () {
-                                          // login(emailController.text.toString(), passwordController.text.toString());
+                                          signup(emailController.text.toString(),usernameController.text.toString, passwordController.text.toString(),confirmPasswordController.text.toString());
                                         },
                                         style: ElevatedButton.styleFrom(
                                           primary: Colors.teal,

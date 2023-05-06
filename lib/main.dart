@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ifind_backend/authscreens/Logo.dart';
 import 'package:ifind_backend/authscreens/login.dart';
 import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
@@ -19,7 +20,7 @@ void main() {
     initialRoute: '/',
     routes: {
       '/login': (context) => Login(),
-      '/landing': (context) => Landing(),
+      '/': (context) => Landing(),
       '/profile': (context) => Profile(),
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
@@ -29,7 +30,8 @@ void main() {
       '/notify': (context) => Notify(),
       '/det_job': (context) => DetailJob(),
       '/chats': (context) => Chat(),
-      '/': (context) => Setting(),
+      '/settings': (context) => Setting(),
+      '/logo': (context) => Logo(),
 
 
     },

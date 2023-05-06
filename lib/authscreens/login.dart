@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,8 +13,93 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  TextEditingController emailController = TextEditingController();
+  final storage = FlutterSecureStorage();
+  bool _isloading = true;
+
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  void login(String username, password) async {
+    if (username==""){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+        child: Text(
+          "password must be provided",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.red
+          ),
+        ),
+      ),
+        backgroundColor: Colors.grey,
+      ));
+    } else if(username == ""){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+        child: Text(
+          "username must be provided",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.red
+          ),
+        ),
+      ),
+        backgroundColor: Colors.grey,
+      ));
+    }
+    else{
+      try {
+        Response response = await post(
+            Uri.parse("https://ifoundapi.herokuapp.com/login/"),
+            body: {
+              'username': username,
+              'password': password,
+            }
+        );
+
+        var data = jsonDecode(response.body.toString());
+        if (data['status'] == 200) {
+          final token = data['token'];
+          await storage.write(key: 'token', value: token);
+          print('login successful');
+        } else if(data['status']==400){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
+            child: Text(
+              "password mismatched",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.red
+              ),
+            ),
+          ),
+            backgroundColor: Colors.grey,
+          ));
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+          child: Text(
+            "please check your network connection",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.red
+            ),
+          ),
+        ),
+          backgroundColor: Colors.grey,
+        ));
+      }
+
+    }
+    setState(() {
+      _isloading = true;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,10 +159,10 @@ class _LoginState extends State<Login> {
                                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                                   child: TextFormField(
                                     obscureText: false,
-                                    controller: emailController,
+                                    controller: usernameController,
                                     decoration:  const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Enter Email',
+                                      hintText: 'Enter username',
                                     ),
                                   ),
                                 ),
@@ -102,21 +191,24 @@ class _LoginState extends State<Login> {
                               ),
                               SizedBox(height: 20,),
                               Row(
-                                children: const <Widget>[
-                                  SizedBox(
+                                children:  <Widget>[
+                                  const SizedBox(
 
                                     width: 40,
                                   ),
                                   //SizedBox
-                                  Text("Don't have an account ?",
+                                  const Text("Don't have an account ?",
                                       style: TextStyle(color: Colors.black,
                                         fontSize: 16.0,
                                       )),
-                                  Text("SignUp",
-                                      style: TextStyle(color: Colors.black,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold
-                                      ))
+                                  TextButton(
+                                    onPressed: ()=>{ Navigator.pushNamed(context, '/signup')},
+                                    child: const Text("SignUp",
+                                        style: TextStyle(color: Colors.black,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold
+                                        )),
+                                  )
                                 ], //<Widget>[]
                               ),
                               SizedBox(height: 20,),
@@ -129,9 +221,18 @@ class _LoginState extends State<Login> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: ElevatedButton(
+                                      child: !_isloading? const CircularProgressIndicator():const Text('Login',
+                                        style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold
+                                        ),),
 
                                       onPressed: () {
-                                        // login(emailController.text.toString(), passwordController.text.toString());
+                                        setState(() {
+                                          _isloading = false;
+                                        });
+                                        // Navigator.pushNamed(context, '/home');
+                                        login(usernameController.text.toString(), passwordController.text.toString());
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: Colors.teal,
@@ -140,11 +241,6 @@ class _LoginState extends State<Login> {
                                         ),
 
                                       ),
-                                      child: const Text('Login',
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold
-                                        ),),
                                     ),
                                   )
                               ),
@@ -155,7 +251,7 @@ class _LoginState extends State<Login> {
 
                     ),
                   ),
-                  )
+                  ),
                 ],
               ),
             )

@@ -60,7 +60,7 @@ class _SettingState extends State<Setting> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(25, 0, 0, 20),
                       child: Container(
-                        child: Text("Profile",
+                        child: const Text("Profile",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 25,
