@@ -68,7 +68,7 @@ class _LoginState extends State<Login> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
             child: Text(
-              "password mismatched",
+              "wrong credentials",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

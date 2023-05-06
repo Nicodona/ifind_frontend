@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:ifind_backend/custom/color.dart';
@@ -15,18 +17,87 @@ class _SignupState extends State<Signup> {
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void signup(email, username, password, confirm)async{
-    try{
-      Response response = await post(
-        Uri.parse(""),
-        body: {
-          'email':email,
-          'username': username,
-          'password': password
-        }
-      )
-    }
+  bool _isloading = false;
 
+  void signup(String email, username, password, confirm) async {
+    if (username=="" || email=="" || password=="" || confirm==""){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+        child: Text(
+          "please fill all fields",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.red
+          ),
+        ),
+      ),
+        backgroundColor: Colors.grey,
+      ));
+    } else if(password != confirm){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+        child: Text(
+          "password did not match",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.red
+          ),
+        ),
+      ),
+        backgroundColor: Colors.grey,
+      ));
+    }
+    else{
+      try {
+        Response response = await post(
+            Uri.parse("https://ifoundapi.herokuapp.com/user/"),
+            body: {
+              'email': email,
+              'username': username,
+              'password': password,
+            }
+        );
+
+        var data = jsonDecode(response.body.toString());
+        if (data['status'] == 200) {
+          print('login successful');
+        } else if(data['status']==400){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
+            child: Text(
+              "wrong credentials",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.red
+              ),
+            ),
+          ),
+            backgroundColor: Colors.grey,
+          ));
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+          child: Text(
+            "please check your network connection",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.red
+            ),
+          ),
+        ),
+          backgroundColor: Colors.grey,
+        ));
+      }
+
+    }
+    setState(() {
+      _isloading = false;
+    });
   }
 
   @override
@@ -194,6 +265,9 @@ class _SignupState extends State<Signup> {
                                       child: ElevatedButton(
 
                                         onPressed: () {
+                                          setState(() {
+                                            _isloading = true;
+                                          });
                                           signup(emailController.text.toString(),usernameController.text.toString, passwordController.text.toString(),confirmPasswordController.text.toString());
                                         },
                                         style: ElevatedButton.styleFrom(
@@ -203,11 +277,11 @@ class _SignupState extends State<Signup> {
                                           ),
 
                                         ),
-                                        child: const Text('Signup',
+                                        child: !_isloading?  Text('Signup',
                                           style: TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold
-                                          ),),
+                                          ),): const CircularProgressIndicator()
                                       ),
                                     )
                                 ),
