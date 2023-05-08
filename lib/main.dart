@@ -25,7 +25,7 @@ void main() {
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
       '/postJob': (context) => JobPost(),
-      '/home': (context) => Missing(),
+      '/found': (context) => Missing(),
       '/jobs': (context) => FindJob(),
       '/notify': (context) => Notify(),
       '/det_job': (context) => DetailJob(),

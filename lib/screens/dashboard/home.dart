@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
+import 'package:ifind_backend/services/remote_services.dart';
+
+import '../../models/found.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
+final storage = FlutterSecureStorage();
 
 class Missing extends StatefulWidget {
   const Missing({Key? key}) : super(key: key);
@@ -19,6 +26,28 @@ class _MissingState extends State<Missing> {
     });
   }
 
+  var _isLoaded = false;
+  String _username = "iFinder";
+  List<Found>?  founds;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  getData() async{
+    founds = await RemoteSevices().getFound();
+    if(founds != null){
+      print(founds![1].image);
+      String? _username = await storage.read(key: 'username');
+      setState(()  {
+        _isLoaded = true;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,23 +69,23 @@ class _MissingState extends State<Missing> {
         items: [
           BottomNavigationBarItem(
             label: 'home',
-              backgroundColor: Colors.teal,
-              icon: IconButton(
-            icon: Icon(Icons.home),
-            iconSize: 30,
-            onPressed: ()=>{},
-          ),
+            backgroundColor: Colors.teal,
+            icon: IconButton(
+              icon: Icon(Icons.home),
+              iconSize: 30,
+              onPressed: ()=>{},
+            ),
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.teal,
             label: 'profile',
-              icon: IconButton(
-            icon: Icon(Icons.shopping_bag),
-            iconSize: 30,
-            onPressed: ()=>{
-              Navigator.pushNamed(context, '/profile')
-            },
-          ),
+            icon: IconButton(
+              icon: Icon(Icons.shopping_bag),
+              iconSize: 30,
+              onPressed: ()=>{
+                Navigator.pushNamed(context, '/profile')
+              },
+            ),
           ),
 
           BottomNavigationBarItem(
@@ -96,21 +125,21 @@ class _MissingState extends State<Missing> {
                     child: Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children:  [
                             SizedBox(height: 35,),
-                          Text('Hi,John',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold
-                          ),
-                          ),
+                            Text('Hi, $_username',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
                             Text('Are you looking for Something?',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 17,
-                            )
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 17,
+                                )
                             )
                           ],
                         )
@@ -121,20 +150,20 @@ class _MissingState extends State<Missing> {
                     child: Row(
                       children: [
                         IconButton(onPressed: ()=>{},
-                            icon: Icon(Icons.notifications_sharp),
+                          icon: Icon(Icons.notifications_sharp),
                           iconSize: 35,
                         ),
                         SizedBox(width: 12,),
-                       Container(
-                         decoration: const BoxDecoration(
-                           color: Colors.black12,
-                           borderRadius: BorderRadius.all(Radius.circular(50)),
-                         ),
-                         child: IconButton(onPressed: ()=>{},
-                             icon: Icon(Icons.person),
-                           iconSize: 50,
-                         ),
-                       )
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                          ),
+                          child: IconButton(onPressed: ()=>{},
+                            icon: Icon(Icons.person),
+                            iconSize: 50,
+                          ),
+                        )
                       ],
                     ),
                   )
@@ -154,175 +183,157 @@ class _MissingState extends State<Missing> {
                     obscureText: false,
                     controller: searchController,
                     decoration:   InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: ()=>{},
-                          icon: Icon(Icons.search)),
-                      border: InputBorder.none,
-                      hintText: 'search for an item with keywords eg books',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      )
+                        suffixIcon: IconButton(
+                            onPressed: ()=>{},
+                            icon: Icon(Icons.search)),
+                        border: InputBorder.none,
+                        hintText: 'search for an item with keywords eg books',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                        )
                     ),
                   ),
                 ),
               ),
 
-          SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    child:  TextButton(
-                      onPressed: (){
-
-                      },
-                      child: const Text('Found Items',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.teal,
-                          decoration: TextDecoration.underline
-                        ),
-                      ),
-                    )
-                ),
-                Container(
-                  child:  TextButton(
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/jobs');
-                    },
-                    child: const Text('Hot Jobs',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  ),
-                )
-                )
-              ],
-            ),
-
-          ),
-
-
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.brown[50],
-            ),
-
-            height: 100,
-              margin: EdgeInsets.symmetric(vertical: 20),
+              SizedBox(
+                height: 50,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Stack(
-                      children: [
+                    Container(
+                        child:  TextButton(
+                          onPressed: (){
 
-                            Container(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(25)),
-                                child: Image.asset('assets/images/bag.jpg',
-                                ),
-                        ),
-                            ),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: (){},
-                        child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text('Bag',
-                              style: TextStyle(
-                                color: Colors.black,
+                          },
+                          child: const Text('Found Items',
+                            style: TextStyle(
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15
-                              ),
-                              ),
+                                color: Colors.teal,
+                                decoration: TextDecoration.underline
+                            ),
+                          ),
+                        )
+                    ),
+                    Container(
+                        child:  TextButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/jobs');
+                          },
+                          child: const Text('Hot Jobs',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                    )
+                  ],
+                ),
 
-                               SizedBox(
-                                 width: 210,
-                                 child: Text('write another thing that you want to post sp that others that are ;ooking forit will find it',
-                                  maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 13
+              ),
+
+                Visibility(
+                  visible: _isLoaded,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: founds?.length,
+                    itemBuilder: (context, index){
+                      return  Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.brown[50],
+                        ),
+
+                        height: 100,
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                            children: [
+                              Stack(
+                                children: [
+
+                                  Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                                      child: FadeInImage(
+                                        image: NetworkImage(founds![index].image ?? " "),
+                                        placeholder: AssetImage(
+                                            "assets/images/bag.jpg"),
+                                        imageErrorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                              'assets/images/bag.jpg',
+                                              fit: BoxFit.fitWidth);
+                                        },
+                                      )
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: InkWell(
+                                    onTap: (){},
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children:  [
+                                          Text(founds![index].category ?? '',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                            width: 199.5,
+                                            child: Text(founds![index].description ?? "",
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 13
+                                              ),
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 75),
+                                            child: Text(founds![index].updated ?? "",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                               ),
-
-                              Padding(
-                                padding: EdgeInsets.only(left: 75),
-                                child: Text('12/3/2013 7:45:25:2233',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                ),
                                 ),
                               )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    //
-                    // Column(
-                    //   children: [
-                    //
-                    //     // Text('${itemData['itemname']}', style: const TextStyle(color: COLOR_BLACK, fontSize: 20, fontWeight: FontWeight.w700,),),
-                    //     Text('some bla bla bla from db'),
-                    //     Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         // Text(' ${itemData['author']} found ${itemData['amount']} ${itemData['itemname']}', style: const TextStyle(color: COLOR_GREY, fontSize: 12, fontWeight: FontWeight.w600,),),
-                    //         // Text(' at ${itemData['location']} posted today', style: const TextStyle(color: COLOR_GREY, fontSize: 11, fontWeight: FontWeight.w600,),)
-                    //         Text('some bla bla \nbla from db'),
-                    //         Text('some bla bla \nbla from db')
-                    //       ],
-                    //     ),
-                    //
-                    //   ],
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       TextButton(
-                    //         onPressed: (){
-                    //           Navigator.pushNamed(context, '/contact');
-                    //         },
-                    //         child: BorderBox(
-                    //             width: 50,
-                    //             height: 25,
-                    //             padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3.0),
-                    //             // child: Text('Contact ${itemData['author']}', style: const TextStyle(color: COLOR_BLACK, fontFamily: 'Montserrat', fontSize: 12),)
-                    //             child: Text("some bla bla \n bla from database"),
-                    //         ),
-                    //       ),
-                    //       Text('not found')
-                    //     ],
-                    //   ),
-                    //   ]
-                    // ),
-                    // const Divider(
-                    //   height: 20,
-                    //   thickness: 2,
-                    //   color: Colors.grey,
-                    // )
 
-                  ]
+                            ]
+                        ),
+
+
+                      );
+                      print(founds![index].image);
+                    }
+                  ),
+                  replacement: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
 
 
-          )
             ],
           ),
         ),

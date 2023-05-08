@@ -62,7 +62,11 @@ class _LoginState extends State<Login> {
         var data = jsonDecode(response.body.toString());
         if (data['status'] == 200) {
           final token = data['token'];
+          final username = data['username'];
           await storage.write(key: 'token', value: token);
+          await storage.write(key: 'username', value: username);
+
+          Navigator.pushNamed(context, '/found');
           print('login successful');
         } else if(data['status']==400){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
@@ -80,6 +84,7 @@ class _LoginState extends State<Login> {
           ));
         }
       } catch (e) {
+        print(e.toString());
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           child: Text(
