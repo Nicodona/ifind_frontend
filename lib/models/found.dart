@@ -5,7 +5,7 @@ import 'dart:convert';
 List<Found> foundFromJson(String str) => List<Found>.from(json.decode(str).map((x) => Found.fromJson(x)));
 
 class Found{
-  final int ?id;
+  final int? item_id;
   final int?  author;
   final String?  category;
   final String? description;
@@ -14,11 +14,11 @@ class Found{
   final String? updated;
   final String? image;
 
-  Found({ this.id,  this.author,  this.description,  this.mention,  this.updated, this.category, this.image, this.place_found});
+  Found({ this.item_id,  this.author,  this.description,  this.mention,  this.updated, this.category, this.image, this.place_found});
 
   factory Found.fromJson( Map<String, dynamic>json){
     return Found(
-        id: json['id'],
+        item_id: json['item_id'],
         author: json['author'],
         mention: json['mention'],
         description: json['description'],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
+import 'package:ifind_backend/screens/dashboard/found_det.dart';
 import 'package:ifind_backend/services/remote_services.dart';
 
 import '../../models/found.dart';
@@ -27,7 +28,15 @@ class _MissingState extends State<Missing> {
   }
 
   var _isLoaded = false;
-  String _username = "iFinder";
+  late String? username;
+
+  Future<void> getusername() async{
+    username = await storage.read(key: 'username');
+    setState(() {
+
+    });
+  }
+
   List<Found>?  founds;
 
 
@@ -35,14 +44,15 @@ class _MissingState extends State<Missing> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getusername();
     getData();
+
   }
 
   getData() async{
     founds = await RemoteSevices().getFound();
     if(founds != null){
       print(founds![1].image);
-      String? _username = await storage.read(key: 'username');
       setState(()  {
         _isLoaded = true;
       });
@@ -56,9 +66,12 @@ class _MissingState extends State<Missing> {
         backgroundColor: Colors.white,
 
         splashColor: Colors.teal,
-        onPressed: ()=>{},
+        onPressed: ()=>{
+          Navigator.pushNamed(context, '/postlost')},
         child: IconButton(
-          onPressed: ()=>{},
+          onPressed: ()=>{
+            Navigator.pushNamed(context, '/postlost')
+          },
           icon: Icon(Icons.add),
           color: Colors.teal,
         ),
@@ -127,7 +140,7 @@ class _MissingState extends State<Missing> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children:  [
                             SizedBox(height: 35,),
-                            Text('Hi, $_username',
+                            Text('Hi, $username',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 22,
@@ -280,7 +293,10 @@ class _MissingState extends State<Missing> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   child: InkWell(
-                                    onTap: (){},
+                                    onTap: (){
+                                      print(founds![index].item_id);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
+                                    },
                                     child: Container(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,

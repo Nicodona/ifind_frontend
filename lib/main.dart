@@ -5,7 +5,7 @@ import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
 import 'package:ifind_backend/screens/dashboard/chats.dart';
 import 'package:ifind_backend/screens/dashboard/notify.dart';
-import 'package:ifind_backend/screens/dashboard/job_details.dart';
+import 'package:ifind_backend/screens/dashboard/found_det.dart';
 import 'package:ifind_backend/screens/dashboard/jobhome.dart';
 import 'package:ifind_backend/screens/dashboard/settings.dart';
 import 'package:ifind_backend/screens/jobPost.dart';
@@ -28,7 +28,6 @@ void main() {
       '/found': (context) => Missing(),
       '/jobs': (context) => FindJob(),
       '/notify': (context) => Notify(),
-      '/det_job': (context) => DetailJob(),
       '/chats': (context) => Chat(),
       '/settings': (context) => Setting(),
       '/logo': (context) => Logo(),
