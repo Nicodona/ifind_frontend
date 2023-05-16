@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 import 'package:ifind_backend/custom/color.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,13 +16,101 @@ class Post extends StatefulWidget {
 }
 
 class _PostState extends State<Post> {
+
   TextEditingController descriptionController = TextEditingController();
   TextEditingController mentionController = TextEditingController();
   TextEditingController datefoundController = TextEditingController();
   TextEditingController placefoundController = TextEditingController();
 
   File? _image;
+ bool _isloading = false;
+ final storage = FlutterSecureStorage();
 
+ void api_upload(String description, mention, datefound, placefound) async {
+   if(_image!.path == null || description==" " || datefound=="" || placefound==""){
+     ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(
+           content: Row(
+             children: [
+               Icon(Icons.error_outline, color: Colors.red),
+               SizedBox(width: 10),
+               Text('please fill all fields and add image',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red)),
+             ],
+           ),
+           backgroundColor: Colors.white,
+           duration: Duration(seconds: 4),
+           behavior: SnackBarBehavior.floating,
+           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+         )
+     );
+   }else{
+
+     try{
+       final token = await storage.read(key: 'token');
+       var request = MultipartRequest('POST', Uri.parse('https://ifoundapi.herokuapp.com/addfound/'));
+       request.files.add( await MultipartFile.fromPath('image', _image!.path));
+
+       request.fields['description'] = description;
+       request.fields['category'] = _value.toString();
+       request.fields['mention'] = mention;
+       request.fields['date_found'] = datefound;
+       request.fields['place_found'] = placefound;
+
+       print(mention);
+
+
+       print(request.fields['data']);
+       print("${request.fields['description']}");
+
+       request.headers['Authorization'] = 'Token $token';
+       var response = await request.send();
+
+       if (response.statusCode==201){
+         ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(
+             content: Row(
+               children: [
+                 Icon(Icons.check_circle, color: Colors.white),
+                 SizedBox(width: 10),
+                 Text('Success! Thanks for being anothers keeper',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+               ],
+             ),
+             backgroundColor: Colors.green,
+             duration: Duration(seconds: 5),
+             behavior: SnackBarBehavior.floating,
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+           ),
+         );
+         Navigator.pop(context);
+       }else{
+         print(response.statusCode);
+       }
+     }catch(e){
+       ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(
+             content: Row(
+               children: [
+                 Icon(Icons.error_outline, color: Colors.red),
+                 SizedBox(width: 10),
+                 Text('please check your internet connection',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red)),
+               ],
+             ),
+             backgroundColor: Colors.white,
+             duration: Duration(seconds: 4),
+             behavior: SnackBarBehavior.floating,
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+           )
+       );
+     }
+   }
+
+   setState(() {
+     _isloading = false;
+   });
+ }
   final ImagePicker picker = ImagePicker();
 
   //we can upload image from camera or from gallery based on parameter
@@ -32,6 +124,7 @@ class _PostState extends State<Post> {
       });
     }
   }
+
   Future<void> _getCamera() async {
     final imagePicker = ImagePicker();
     final image = await imagePicker.pickImage(source: ImageSource.camera);
@@ -248,7 +341,7 @@ class _PostState extends State<Post> {
                                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                                         child: TextFormField(
                                           textAlign: TextAlign.left,
-                                          obscureText: true,
+                                          obscureText: false,
                                           controller: datefoundController,
                                           decoration:  const InputDecoration(
                                             // filled: true,
@@ -283,7 +376,7 @@ class _PostState extends State<Post> {
                                         ),
                                         padding: const EdgeInsets.fromLTRB(10, 10, 30, 0),
                                         child: TextFormField(
-                                          obscureText: true,
+                                          obscureText: false,
                                           controller: placefoundController,
                                           decoration:  const InputDecoration(
                                             // filled: true,
@@ -310,69 +403,102 @@ class _PostState extends State<Post> {
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 20),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.teal,
-                            borderRadius: BorderRadius.all(Radius.circular(25))
-                          ),
-                          child: IconButton(
-                            onPressed:  _getImage,
-                            icon: Icon(Icons.add_a_photo),
-                            iconSize: 35,
+                  Row(
+                    children: [
+                      Container(
+                        width: 200,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 2),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.teal,
+                                          borderRadius: BorderRadius.all(Radius.circular(25))
+                                      ),
+                                      child: IconButton(
+                                        onPressed:  _getImage,
+                                        icon: Icon(Icons.image),
+                                        iconSize: 35,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 70),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.teal,
+                                            borderRadius: BorderRadius.all(Radius.circular(25))
+                                        ),
+                                        child: IconButton(
+                                          onPressed: _getCamera,
+                                          icon: Icon(Icons.camera_alt_outlined),
+                                          iconSize: 35,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+
+
+                              Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                                  child: SizedBox(
+                                      width: 100,
+                                      height: 50,
+                                      // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      child: ElevatedButton(
+
+
+                                          onPressed: () {
+
+                                            setState(() {
+                                              _isloading = true;
+                                            });
+
+                                            api_upload(descriptionController.text.toString(), mentionController.text.toString(), datefoundController.text.toString(), placefoundController.text.toString());
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.teal,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                            ),
+
+                                          ),
+                                          child: !_isloading? const Text('Post',
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          ): CircularProgressIndicator()
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 70),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.all(Radius.circular(25))
-                            ),
-                            child: IconButton(
-                              onPressed: _getCamera,
-                              icon: Icon(Icons.camera_alt_outlined),
-                              iconSize: 35,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-
-
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 230.0, 8.0),
-                      child: SizedBox(
-                          width: 100,
-                          height: 50,
-                          // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: ElevatedButton(
-
-                            onPressed: () {
-                              // login(emailController.text.toString(), passwordController.text.toString());
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.teal,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-
-                            ),
-                            child: const Text('Post',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          )
                       ),
-                    ),
-                  ),
+                      Container(
+                        height:125,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Center(
+                          child: _image != null
+                              ? Image.file(File(_image!.path), height: 200, width: 200, fit: BoxFit.cover,)
+                              : const Text('--no image selected--'),
+                        )
+                      )
+                    ],
+                  )
                 ],
               ),
             )

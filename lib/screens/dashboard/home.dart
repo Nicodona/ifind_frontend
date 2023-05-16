@@ -248,104 +248,113 @@ class _MissingState extends State<Missing> {
 
               ),
 
-                Visibility(
-                  visible: _isLoaded,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: founds?.length,
-                    itemBuilder: (context, index){
-                      return  Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.brown[50],
-                        ),
+                SingleChildScrollView(
+                  child: Visibility(
+                    visible: _isLoaded,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: founds?.length,
+                      itemBuilder: (context, index){
+                        return  SingleChildScrollView(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.brown[50],
+                            ),
 
-                        height: 100,
-                        margin: EdgeInsets.symmetric(vertical: 20),
-                        child: Row(
-                            children: [
-                              Stack(
+                            height: 100,
+                            margin: EdgeInsets.symmetric(vertical: 20),
+                            child: Row(
                                 children: [
+                                  Stack(
+                                    children: [
 
-                                  Container(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(Radius.circular(25)),
-                                      child: FadeInImage(
-                                        image: NetworkImage(founds![index].image ?? " "),
-                                        placeholder: AssetImage(
-                                            "assets/images/bag.jpg"),
-                                        imageErrorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                              'assets/images/bag.jpg',
-                                              fit: BoxFit.fitWidth);
-                                        },
-                                      )
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: InkWell(
-                                    onTap: (){
-                                      print(founds![index].item_id);
-                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
-                                    },
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                          Text(founds![index].category ?? '',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15
-                                            ),
-                                          ),
-
-                                          SizedBox(
-                                            width: 199.5,
-                                            child: Text(founds![index].description ?? "",
-                                              maxLines: 4,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 13
-                                              ),
-                                            ),
-                                          ),
-
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 75),
-                                            child: Text(founds![index].updated ?? "",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                              ),
-                                            ),
+                                      Container(
+                                        height: 100,
+                                        width: 150,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                                          child: FadeInImage(
+                                            image: NetworkImage(founds![index].image ?? " "),
+                                            placeholder: AssetImage(
+                                                "assets/images/bag.jpg"),
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                  'assets/images/bag.jpg',
+                                              );
+                                            },
+                                            fit: BoxFit.fill,
                                           )
-                                        ],
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5,),
+
+                                  SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: InkWell(
+                                        onTap: (){
+                                          print(founds![index].item_id);
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:  [
+                                                Text(founds![index].category ?? '',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 15
+                                                  ),
+                                                ),
+
+                                                SizedBox(
+                                                  width: 199.5,
+                                                  child: Text(founds![index].description ?? "",
+                                                    maxLines: 4,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        fontSize: 13
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 10),
+                                                  child: Text(founds![index].updated ?? "",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              )
+                                  )
 
-                            ]
-                        ),
+                                ]
+                            ),
 
 
-                      );
-                      print(founds![index].image);
-                    }
-                  ),
-                  replacement: const Center(
-                    child: CircularProgressIndicator(),
+                          ),
+                        );
+                        print(founds![index].image);
+                      }
+                    ),
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 ),
 

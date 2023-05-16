@@ -7,6 +7,7 @@ import 'package:ifind_backend/screens/dashboard/chats.dart';
 import 'package:ifind_backend/screens/dashboard/notify.dart';
 import 'package:ifind_backend/screens/dashboard/found_det.dart';
 import 'package:ifind_backend/screens/dashboard/jobhome.dart';
+import 'package:ifind_backend/screens/dashboard/profile_page.dart';
 import 'package:ifind_backend/screens/dashboard/settings.dart';
 import 'package:ifind_backend/screens/jobPost.dart';
 import 'package:ifind_backend/screens/lostPost.dart';
@@ -31,6 +32,7 @@ void main() {
       '/chats': (context) => Chat(),
       '/settings': (context) => Setting(),
       '/logo': (context) => Logo(),
+      '/account': (context) => User(),
 
 
     },

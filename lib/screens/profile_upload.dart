@@ -188,7 +188,7 @@ class _ProfileState extends State<Profile> {
                             child: ElevatedButton(
 
                               onPressed: () {
-                                // login(emailController.text.toString(), passwordController.text.toString());
+                                // profile(emailController.text.toString(), passwordController.text.toString());
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.teal,
