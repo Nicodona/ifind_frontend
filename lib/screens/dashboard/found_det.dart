@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
+import 'package:ifind_backend/screens/dashboard/contact_author.dart';
 
 import '../../models/found.dart';
 
@@ -229,7 +230,7 @@ class _DetailfoundState extends State<Detailfound> {
                                       children: [
                                         TextButton(
                                           onPressed: (){
-                                            // Navigator.pushNamed(context, '/contact');
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Contact(author_id: object.author ?? 2)));
                                           },
                                           child: BorderBox(
                                               width: 200,

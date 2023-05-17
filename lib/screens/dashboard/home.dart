@@ -106,7 +106,9 @@ class _MissingState extends State<Missing> {
             label: 'notify',
             icon: IconButton(
               icon: Icon(Icons.notifications),
-              onPressed: ()=>{},
+              onPressed: ()=>{
+                Navigator.pushNamed(context, '/notify')
+              },
             ),
           ),
           BottomNavigationBarItem(
@@ -162,8 +164,10 @@ class _MissingState extends State<Missing> {
                   Container(
                     child: Row(
                       children: [
-                        IconButton(onPressed: ()=>{},
-                          icon: Icon(Icons.notifications_sharp),
+                        IconButton(onPressed: ()=>{
+                          Navigator.pushNamed(context, '/notify')
+                        },
+                          icon: Icon(Icons.notifications_active),
                           iconSize: 35,
                         ),
                         SizedBox(width: 12,),
