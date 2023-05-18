@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ifind_backend/screens/dashboard/message.dart';
+import 'package:ifind_backend/services/remote_services.dart';
 
 class Notify extends StatefulWidget {
   const Notify({Key? key}) : super(key: key);
@@ -8,20 +13,45 @@ class Notify extends StatefulWidget {
 }
 
 class _NotifyState extends State<Notify> {
+  final storage = FlutterSecureStorage();
+  List<Alert>?  message;
+  bool _isLoaded = false;
+
+
+
+
+
+  getdata() async{
+    message = await Message().getMessage();
+    if(message != null){
+      print('there is data');
+      setState(()  {
+        _isLoaded = true;
+      });
+    }
+  }
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.only(top: 40),
             child: Column(
               children: [
 
                 Row(
                   children: [
                     IconButton(
-                        onPressed: (){},
-                        icon: Icon(Icons.arrow_back_ios),
+                      onPressed: (){},
+                      icon: Icon(Icons.arrow_back_ios),
                       iconSize: 40,
                     ),
 
@@ -29,11 +59,11 @@ class _NotifyState extends State<Notify> {
                       padding: const EdgeInsets.only(left: 40),
                       child: Container(
                         child: const Text('Notifications',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 35
-                        ),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35
+                          ),
                         ),
                       ),
                     ),
@@ -41,76 +71,136 @@ class _NotifyState extends State<Notify> {
                 ),
 
                 SizedBox(height: 20,),
-                Padding(
-                  padding: const EdgeInsets.only(left: 200),
-                  child: Container(
-                    child: TextButton(
-                      onPressed: (){},
-                      child: Text('mark all as read',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Container(
+                        child: Text('Hi ifinder',
                         style: TextStyle(
-                          color: Colors.black
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                        ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.brown[50]
-                  ),
-                  child: Row(
-                    children: [
 
-                      Padding(
-                        padding:  EdgeInsets.all(20.0),
-                        child: Container(
-                          height: 15,
-                          width: 15,
-
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(25)
-                          ),
-                        ),
-                      ),
-                      
-                      Container(
-                        width: 225,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Container(
                         child: TextButton(
                           onPressed: (){},
-                          child: const Text(' some body in Ghana street bamenda just mentioned you in a lost item announcement check out here ',
-                          maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.black),
+                          child: Text('mark all as read',
+                            style: TextStyle(
+                                color: Colors.black
+                            ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                IconButton(onPressed: (){}, icon: Icon(Icons.check), color: Colors.teal,),
-                                IconButton(onPressed: (){}, icon: Icon(Icons.delete), color: Colors.teal,),
-                              ],
-                            ),
+                    ),
+                  ],
+                ),
+                      Visibility(
+    visible: _isLoaded,
+    child: ListView.builder(
+    shrinkWrap: true,
+    itemCount: message?.length,
+    itemBuilder: (context, index) {
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          height: 100,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.brown[50]
+          ),
+          child: Row(
+            children: [
 
-                            Text('2/3/2023')
-                          ],
+              Padding(
+                padding:  EdgeInsets.all(10.0),
+                child: Container(
+                  height: 10,
+                  width: 10,
 
-
-                        ),
-                      )
-                    ],
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(25)
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+
+              Container(
+                height: 200,
+                width: 280,
+                child: TextButton(
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Messaging(id: message![index].id ?? 2)));
+
+                  },
+                  child:  Text(message![index].message ?? 'loading',
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(onPressed: (){}, icon: Icon(Icons.check), color: Colors.teal,),
+                      ],
+                    ),
+
+                    Text('2/3/2023')
+                  ],
+
+
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+    )
+               )
+
+
+
+
+
+    ],
+            )
           ),
       ),
+    );
+  }
+}
+
+List<Alert> AlertFromJson(String str) => List<Alert>.from(json.decode(str).map((x) => Alert.fromJson(x)));
+class Alert {
+  final int id;
+  final String? author;
+  final String? date;
+  final String? message;
+
+  // final String? image;
+
+  Alert(
+      {required this.id, this.author, this.date, this.message,});
+
+  factory Alert.fromJson( Map<String, dynamic>json){
+    return Alert(
+        id: json['id'],
+        author: json['author'],
+          date: json['date'],
+        message: json['message'],
+
     );
   }
 }

@@ -28,7 +28,7 @@ class _ContactState extends State<Contact> {
         Uri.parse("https://ifoundapi.herokuapp.com/message/"),
         body: {
           'reciever': widget.author_id.toString(),
-          'message': message + 'please you can reach me'+ platform +'@'+ contact,
+          'message': message + '. please you can reach me '+ platform +'@'+ contact,
           'author': username,
         },
         headers: {'Authorization': 'Token $token'}
@@ -89,7 +89,7 @@ class _ContactState extends State<Contact> {
       body: SingleChildScrollView(
         child: FutureBuilder<Author?>(
           future: getdata(),
-    builder: (context,snapshot) {
+         builder: (context,snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
