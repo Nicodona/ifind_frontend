@@ -63,12 +63,16 @@ class _LoginState extends State<Login> {
         if (data['status'] == 200) {
           final token = data['token'];
           final username = data['username'];
+          final id = data['id'];
           await storage.write(key: 'token', value: token);
           await storage.write(key: 'username', value: username);
-
+          await storage.write(key: 'id', value: id.toString());
           Navigator.pushNamed(context, '/found');
           print('login successful');
-        } else if(data['status']==400){
+        } else if(data['status']==100){
+          Navigator.pushNamed(context, '/profile');
+        }
+        else if(data['status']==400){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
             child: Text(

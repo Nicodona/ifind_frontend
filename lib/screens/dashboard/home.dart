@@ -49,7 +49,7 @@ class _MissingState extends State<Missing> {
 
   }
 
-  getData() async{
+  Future getData() async{
     founds = await RemoteSevices().getFound();
     if(founds != null){
       print(founds![1].image);
@@ -176,7 +176,9 @@ class _MissingState extends State<Missing> {
                             color: Colors.black12,
                             borderRadius: BorderRadius.all(Radius.circular(50)),
                           ),
-                          child: IconButton(onPressed: ()=>{},
+                          child: IconButton(onPressed: ()=>{
+                            Navigator.pushNamed(context, '/account')
+                          },
                             icon: Icon(Icons.person),
                             iconSize: 50,
                           ),
@@ -255,106 +257,109 @@ class _MissingState extends State<Missing> {
                 SingleChildScrollView(
                   child: Visibility(
                     visible: _isLoaded,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: founds?.length,
-                      itemBuilder: (context, index){
-                        return  SingleChildScrollView(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.brown[50],
-                            ),
+                    child: RefreshIndicator(
+                      onRefresh: getData,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: founds?.length,
+                        itemBuilder: (context, index){
+                          return  SingleChildScrollView(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.brown[50],
+                              ),
 
-                            height: 100,
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            child: Row(
-                                children: [
-                                  Stack(
-                                    children: [
+                              height: 100,
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              child: Row(
+                                  children: [
+                                    Stack(
+                                      children: [
 
-                                      Container(
-                                        height: 100,
-                                        width: 150,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                                          child: FadeInImage(
-                                            image: NetworkImage(founds![index].image ?? " "),
-                                            placeholder: AssetImage(
-                                                "assets/images/bag.jpg"),
-                                            imageErrorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                  'assets/images/bag.jpg',
-                                              );
-                                            },
-                                            fit: BoxFit.fill,
-                                          )
+                                        Container(
+                                          height: 100,
+                                          width: 150,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                                            child: FadeInImage(
+                                              image: NetworkImage(founds![index].image ?? " "),
+                                              placeholder: AssetImage(
+                                                  "assets/images/default.png"),
+                                              imageErrorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                    'assets/images/default.png',
+                                                );
+                                              },
+                                              fit: BoxFit.fill,
+                                            )
+                                            ),
                                           ),
-                                        ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5,),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5,),
 
-                                  SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: InkWell(
-                                        onTap: (){
-                                          print(founds![index].item_id);
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children:  [
-                                                Text(founds![index].category ?? '',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 15
-                                                  ),
-                                                ),
-
-                                                SizedBox(
-                                                  width: 199.5,
-                                                  child: Text(founds![index].description ?? "",
-                                                    maxLines: 4,
-                                                    overflow: TextOverflow.ellipsis,
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: InkWell(
+                                          onTap: (){
+                                            print(founds![index].item_id);
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children:  [
+                                                  Text(founds![index].category ?? '',
                                                     style: TextStyle(
-                                                        fontSize: 13
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 15
                                                     ),
                                                   ),
-                                                ),
 
-                                                Padding(
-                                                  padding: EdgeInsets.only(left: 10),
-                                                  child: Text(founds![index].updated ?? "",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12,
+                                                  SizedBox(
+                                                    width: 199.5,
+                                                    child: Text(founds![index].description ?? "",
+                                                      maxLines: 4,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontSize: 13
+                                                      ),
                                                     ),
                                                   ),
-                                                )
-                                              ],
+
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 10),
+                                                    child: Text(founds![index].updated ?? "",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  )
+                                    )
 
-                                ]
+                                  ]
+                              ),
+
+
                             ),
-
-
-                          ),
-                        );
-                        print(founds![index].image);
-                      }
+                          );
+                          print(founds![index].image);
+                        }
+                      ),
                     ),
                     replacement: const Center(
                       child: CircularProgressIndicator(),

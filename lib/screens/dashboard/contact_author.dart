@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
 class Contact extends StatefulWidget {
   final int author_id;
@@ -20,6 +17,16 @@ class _ContactState extends State<Contact> {
   TextEditingController platformController = TextEditingController();
   TextEditingController messageController = TextEditingController();
 
+
+  late String? uid;
+
+  Future<void> getusername() async{
+    uid = await storage.read(key: 'id');
+    setState(() {
+
+    });
+  }
+
   void send(String platform, contact, message) async{
     final username = await storage.read(key: 'username');
     final token = await storage.read(key: 'token');
@@ -29,14 +36,29 @@ class _ContactState extends State<Contact> {
         body: {
           'reciever': widget.author_id.toString(),
           'message': message + '. please you can reach me '+ platform +'@'+ contact,
-          'author': username,
+          'author': uid.toString(),
         },
         headers: {'Authorization': 'Token $token'}
 
     );
 
     if (response.statusCode==200){
-      print('successfully sent your message');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Success! your message has been sent,always check notification for reply',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        ),
+      );
     }else{
       print(response.statusCode);
     }
@@ -52,7 +74,7 @@ class _ContactState extends State<Contact> {
     try{
       var client = Client();
       final token = await storage.read(key: 'token');
-      var uri = Uri.parse("https://ifoundapi.herokuapp.com/register/${widget.author_id}/");
+      var uri = Uri.parse("https://ifoundapi.herokuapp.com/register/14/");
       var response = await client.get(
         uri, headers: {'Authorization': 'Token $token'},
       );
@@ -149,34 +171,11 @@ class _ContactState extends State<Contact> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(onPressed: () async{
-                      final link = WhatsAppUnilink(
-                        phoneNumber: '${author.phone}',
-                        text: "Hey! I'm inquiring about a missing item you posted on ifind",
-                      );
-                      // Convert the WhatsAppUnilink instance to a string.
-                      // Use either Dart's string interpolation or the toString() method.
-                      // The "launchUrlString" method is part of "url_launcher_string".
-                      await launchUrlString('$link');
-
-
-
-                    }, icon: Icon(Icons.whatsapp_outlined),color:Colors.teal, iconSize: 40,),
+                    IconButton(onPressed: () async{}, icon: Icon(Icons.whatsapp_outlined),color:Colors.teal, iconSize: 40,),
                     IconButton(onPressed: (){}, icon: Icon(Icons.facebook_outlined),iconSize: 40,color: Colors.blue,),
-                    IconButton(onPressed: ()=>{
+                    IconButton(onPressed: ()=>{}, icon: Icon(Icons.mail_outline),iconSize: 40,color: Colors.red,),
 
-
-
-                    }, icon: Icon(Icons.mail_outline),iconSize: 40,color: Colors.red,),
-
-                    IconButton(onPressed: ()async {
-                        final Uri launchUri = Uri(
-                          scheme: 'tel',
-                          path: author.phone,
-                        );
-                        await launchUrl(launchUri);
-
-                    }, icon: Icon(Icons.phone),iconSize: 40,color: Colors.black,),
+                    IconButton(onPressed: ()async {}, icon: Icon(Icons.phone),iconSize: 40,color: Colors.black,),
                   ],
                 ),
               ),

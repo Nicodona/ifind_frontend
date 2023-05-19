@@ -50,7 +50,9 @@ class _NotifyState extends State<Notify> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
                       icon: Icon(Icons.arrow_back_ios),
                       iconSize: 40,
                     ),
@@ -156,7 +158,7 @@ class _NotifyState extends State<Notify> {
                       ],
                     ),
 
-                    Text('2/3/2023')
+                    Text(message![index].date ?? "posted today")
                   ],
 
 
@@ -185,7 +187,7 @@ class _NotifyState extends State<Notify> {
 List<Alert> AlertFromJson(String str) => List<Alert>.from(json.decode(str).map((x) => Alert.fromJson(x)));
 class Alert {
   final int id;
-  final String? author;
+  final int? author;
   final String? date;
   final String? message;
 

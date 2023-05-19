@@ -91,11 +91,11 @@ class _DetailfoundState extends State<Detailfound> {
                                       child: FadeInImage(
                                         image: NetworkImage(object.image ?? " "),
                                         placeholder: AssetImage(
-                                            "assets/images/bag.jpg"),
+                                            "assets/images/default.png"),
                                         imageErrorBuilder:
                                             (context, error, stackTrace) {
                                           return Image.asset(
-                                              'assets/images/bag.jpg',
+                                              'assets/images/default.png',
                                               fit: BoxFit.fitWidth);
                                         },
                                         fit: BoxFit.cover,
@@ -230,7 +230,7 @@ class _DetailfoundState extends State<Detailfound> {
                                       children: [
                                         TextButton(
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Contact(author_id: object.author ?? 2)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Contact(author_id: object.item_id ?? 2)));
                                           },
                                           child: BorderBox(
                                               width: 200,

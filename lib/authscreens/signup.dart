@@ -63,22 +63,27 @@ class _SignupState extends State<Signup> {
         );
 
         var data = jsonDecode(response.body.toString());
-        if (response.statusCode == 200) {
+        if (response.statusCode == 201) {
           print('register successful');
-        } else if(data['status']==400){
+          Navigator.pushNamed(context, '/login');
+
+
+        } else if(response.statusCode==400){
+          print(response.statusCode);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 100),
             child: Text(
-              "account exist",
+              "acount exist or email field invalid",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.red
+                  color: Colors.deepOrange
               ),
             ),
           ),
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.white,
           ));
+        } else{
         }
       } catch (e) {
         print(e.toString());

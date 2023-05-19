@@ -11,6 +11,7 @@ class RemoteSevices{
   Future<List<Found>?> getFound() async {
     final token = await storage.read(key: 'token');
     final username = await storage.read(key: 'username');
+    final id = await storage.read(key: 'id');
     try {
       var client = http.Client();
       var uri = Uri.parse("https://ifoundapi.herokuapp.com/found/");
@@ -21,6 +22,7 @@ class RemoteSevices{
       if (response.statusCode == 200) {
         print('load successful');
         print(username);
+        print(id);
         var json = response.body;
         return foundFromJson(json);
       }else{
