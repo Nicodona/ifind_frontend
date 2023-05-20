@@ -96,7 +96,7 @@ class _MissingState extends State<Missing> {
               icon: Icon(Icons.shopping_bag),
               iconSize: 30,
               onPressed: ()=>{
-                Navigator.pushNamed(context, '/profile')
+                Navigator.pushNamed(context, '/account')
               },
             ),
           ),
@@ -326,7 +326,7 @@ class _MissingState extends State<Missing> {
                                                   SizedBox(
                                                     width: 199.5,
                                                     child: Text(founds![index].description ?? "",
-                                                      maxLines: 4,
+                                                      maxLines: 3,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                           fontSize: 13
@@ -336,7 +336,7 @@ class _MissingState extends State<Missing> {
 
                                                   Padding(
                                                     padding: EdgeInsets.only(left: 10),
-                                                    child: Text(founds![index].updated ?? "",
+                                                    child: Text(founds![index].updated?.substring(0,9) ?? "",
                                                       style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 12,

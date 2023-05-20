@@ -230,13 +230,13 @@ class _DetailfoundState extends State<Detailfound> {
                                       children: [
                                         TextButton(
                                           onPressed: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Contact(author_id: object.item_id ?? 2)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context)=>Contact(author_id: object.author ?? 2)));
                                           },
                                           child: BorderBox(
                                               width: 200,
                                               height: 50,
                                               padding:  EdgeInsets.symmetric(horizontal: 4.0, vertical: 3.0),
-                                              child: Text('See author information', style: const TextStyle(color: Colors.teal, fontFamily: 'Montserrat', fontSize: 12),)
+                                              child: Text('contact author', style: const TextStyle(color: Colors.teal, fontFamily: 'Montserrat', fontSize: 12),)
                                           ),
                                         ),
                                       ],

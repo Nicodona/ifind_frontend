@@ -18,31 +18,23 @@ class _ContactState extends State<Contact> {
   TextEditingController messageController = TextEditingController();
 
 
-  late String? uid;
-
-  Future<void> getusername() async{
-    uid = await storage.read(key: 'id');
-    setState(() {
-
-    });
-  }
 
   void send(String platform, contact, message) async{
-    final username = await storage.read(key: 'username');
+    final uid = await storage.read(key: 'id');
     final token = await storage.read(key: 'token');
   try{
     Response response = await post(
         Uri.parse("https://ifoundapi.herokuapp.com/message/"),
         body: {
           'reciever': widget.author_id.toString(),
-          'message': message + '. please you can reach me '+ platform +'@'+ contact,
+          'message': message + '. please you can reach me '+ platform +' @ '+ contact,
           'author': uid.toString(),
         },
         headers: {'Authorization': 'Token $token'}
 
     );
 
-    if (response.statusCode==200){
+    if (response.statusCode==201){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
@@ -74,7 +66,7 @@ class _ContactState extends State<Contact> {
     try{
       var client = Client();
       final token = await storage.read(key: 'token');
-      var uri = Uri.parse("https://ifoundapi.herokuapp.com/register/14/");
+      var uri = Uri.parse("https://ifoundapi.herokuapp.com/register/${widget.author_id}/");
       var response = await client.get(
         uri, headers: {'Authorization': 'Token $token'},
       );
@@ -108,6 +100,7 @@ class _ContactState extends State<Contact> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       body: SingleChildScrollView(
         child: FutureBuilder<Author?>(
           future: getdata(),
@@ -125,7 +118,9 @@ class _ContactState extends State<Contact> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(onPressed: (){},
+                    IconButton(onPressed: (){
+                      Navigator.pop(context);
+                    },
                       icon: Icon(Icons.arrow_back_ios,
                       ),
                       iconSize: 40,
@@ -144,16 +139,16 @@ class _ContactState extends State<Contact> {
                 child: Container(
                   height: 180,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(200)),
+                      borderRadius: BorderRadius.all(Radius.circular(200),),
                       child: FadeInImage(
                         image: AssetImage(
-                            "assets/images/bag.jpg"),
+                            "assets/images/default.png"),
                         placeholder: AssetImage(
-                            "assets/images/bag.jpg"),
+                            "assets/images/default.png"),
                         imageErrorBuilder:
                             (context, error, stackTrace) {
                           return Image.asset(
-                              'assets/images/bag.jpg',
+                              'assets/images/default.png',
                               fit: BoxFit.fitWidth);
                         },
                         fit: BoxFit.cover,
@@ -186,6 +181,16 @@ class _ContactState extends State<Contact> {
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("${author.my_id}",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
                   ),
                 ),
               ),

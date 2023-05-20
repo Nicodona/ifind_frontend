@@ -47,13 +47,14 @@ class _MessagingState extends State<Messaging> {
       );
 
       if (response.statusCode==201){
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: [
                 Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
-                Text('reply sent, please always check notification for new messages',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+                Text('reply sent,check notification for new messages',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
               ],
             ),
             backgroundColor: Colors.green,
@@ -149,7 +150,7 @@ class _MessagingState extends State<Messaging> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('${msg.date}'),
+                          child: Text('${msg.date?.substring(0,9)}'),
                         )
                       ],
 
@@ -204,6 +205,7 @@ class _MessagingState extends State<Messaging> {
                         child: IconButton(
                           onPressed: (){
                             serve(newController.text.toString(), );
+                            newController == '';
                           },
                           icon: Icon(Icons.send, color: Colors.teal,),
                         )

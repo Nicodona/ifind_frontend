@@ -158,7 +158,7 @@ class _NotifyState extends State<Notify> {
                       ],
                     ),
 
-                    Text(message![index].date ?? "posted today")
+                    Text(message![index].date?.substring(0,9) ?? "posted today")
                   ],
 
 
