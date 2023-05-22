@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../custom/borderBox.dart';
+import '../../models/found.dart';
+import '../../services/remote_services.dart';
 
 class User extends StatefulWidget {
   const User({Key? key}) : super(key: key);
@@ -16,6 +18,63 @@ class _UserState extends State<User> {
 
 
   final storage = FlutterSecureStorage();
+  List<Found>?  posts;
+  bool _isloaded = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+
+  }
+
+
+  void getDelete(int? item_id)async {
+    final token = await storage.read(key: 'token');
+    Response response =  await delete(
+        Uri.parse("https://ifoundapi.herokuapp.com/found/${item_id}"),
+        headers: {'Authorization': 'Token $token'}
+    );
+
+    if(response.statusCode==301){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 10),
+              Text('your post will be deleted',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 5),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        ),
+      );
+    }else{
+      print(response.statusCode);
+    }
+
+  }
+
+
+  Future getData() async{
+    posts = await Posts().getPosts();
+    if(posts != null){
+      print(posts![1].image);
+      setState(()  {
+        _isloaded = true;
+      });
+    }
+  }
+
+
+
+
+
   Future<UserData?> getdata() async{
     final id = await storage.read(key: 'id');
     print(id);
@@ -55,7 +114,7 @@ class _UserState extends State<User> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -216,12 +275,12 @@ class _UserState extends State<User> {
                                         child: Row(
                                           children: const [
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(4.0),
                                               child: Icon(Icons.delete, color: Colors.red,),
                                             ),
                                             Text("delete account"),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 190),
+                                              padding: EdgeInsets.only(left: 188),
                                               child: Icon(Icons.navigate_next_sharp),
                                             ),
                                           ],
@@ -269,12 +328,12 @@ class _UserState extends State<User> {
                                         child: Row(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(2.0),
                                               child: Icon(Icons.gpp_bad),
                                             ),
                                             Text("Report account"),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 166),
+                                              padding: const EdgeInsets.only(left: 163),
                                               child: IconButton(
                                                   onPressed: (){},
                                                   icon: Icon(Icons.navigate_next_sharp)),
@@ -312,7 +371,123 @@ class _UserState extends State<User> {
                         thickness: 2,
                         color: Colors.white,
                       ),
-                      Text('see your post')
+                      Text('see your post', style: TextStyle(color: Colors.white)),
+
+                      SingleChildScrollView(
+                        child: Visibility(
+                          visible: _isloaded,
+                          child: RefreshIndicator(
+                            onRefresh: getData,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: posts?.length,
+                                itemBuilder: (context, index){
+                                  return  SingleChildScrollView(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: Colors.brown[50],
+                                      ),
+
+                                      height: 100,
+                                      margin: EdgeInsets.symmetric(vertical: 20),
+                                      child: Row(
+                                          children: [
+                                            Stack(
+                                              children: [
+
+                                                Container(
+                                                  height: 100,
+                                                  width: 150,
+                                                  child: ClipRRect(
+                                                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                                                      child: FadeInImage(
+                                                        image: NetworkImage(posts![index].image ?? " "),
+                                                        placeholder: AssetImage(
+                                                            "assets/images/default.png"),
+                                                        imageErrorBuilder:
+                                                            (context, error, stackTrace) {
+                                                          return Image.asset(
+                                                            'assets/images/default.png',
+                                                          );
+                                                        },
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 5,),
+
+                                            SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(2.0),
+                                                child: InkWell(
+                                                  onTap: (){
+                                                    print(posts![index].item_id);
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(6.0),
+                                                    child: Container(
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children:  [
+                                                          Text(posts![index].category ?? '',
+                                                            style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: 15
+                                                            ),
+                                                          ),
+
+                                                          Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 160.5,
+                                                                child: Text(posts![index].description ?? "",
+                                                                  maxLines: 3,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                  style: TextStyle(
+                                                                      fontSize: 13
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                  padding: EdgeInsets.only(left: 10),
+                                                                  child: IconButton(
+                                                                    icon: Icon(Icons.delete),
+                                                                    color: Colors.red,
+                                                                    onPressed: (){
+                                                                      getDelete(posts![index].item_id);
+                                                                    },
+                                                                  )
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+
+                                          ]
+                                      ),
+
+
+                                    ),
+                                  );
+                                  print(posts![index].image);
+                                }
+                            ),
+                          ),
+                          replacement: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -337,3 +512,4 @@ class UserData {
   UserData(
       { required this.id, this.my_id, this.name, this.region, this.location, this.phone, this.profession});
 }
+

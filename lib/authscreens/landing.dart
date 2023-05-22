@@ -16,9 +16,7 @@ class Landing extends StatelessWidget {
         Padding(
                 padding: const EdgeInsets.all(35.0),
                 child: Container(
-                    child: const Text("Introducing ifind, the ultimate app for finding your missing items."
-                        "With ifind, you will never have to waste your precious"
-                        " time finding your missing belongings or person",
+                    child: const Text("Introducing ifind, the ultimate app for finding your missing items and persons, signin or create an account now",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 21,

@@ -76,13 +76,14 @@ class _ProfileState extends State<Profile> {
         }else{
           print('error');
           print(response.statusCode);
+          print(token);
         }
       } catch (e) {
         print(e.toString());
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
           child: Text(
-            "please check your network connection",
+            "please check your network connection and make sure your phone is valid",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -136,7 +137,7 @@ class _ProfileState extends State<Profile> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 155),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 150),
                     child: Container(
                       child: const Text("Profile",
                         style: TextStyle(
@@ -266,7 +267,7 @@ class _ProfileState extends State<Profile> {
                                           // filled: true,
                                           // fillColor: Colors.brown[50],
                                           border: InputBorder.none,
-                                          hintText: 'Professional',
+                                          hintText: 'Profession',
                                         ),
                                       ),
                                     ),
@@ -305,7 +306,7 @@ class _ProfileState extends State<Profile> {
 
                     Container(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
                         child: SizedBox(
                             width: 200,
                             height: 50,

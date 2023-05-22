@@ -17,7 +17,14 @@ class _NotifyState extends State<Notify> {
   List<Alert>?  message;
   bool _isLoaded = false;
 
+  late String? username;
 
+  Future<void> getusername() async{
+    username = await storage.read(key: 'username');
+    setState(() {
+
+    });
+  }
 
 
 
@@ -36,6 +43,7 @@ class _NotifyState extends State<Notify> {
     // TODO: implement initState
     super.initState();
     getdata();
+    getusername();
   }
 
   @override
@@ -79,7 +87,7 @@ class _NotifyState extends State<Notify> {
                     Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: Container(
-                        child: Text('Hi ifinder',
+                        child: Text('Hi $username',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20

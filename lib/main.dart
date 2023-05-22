@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ifind_backend/authscreens/Logo.dart';
+import 'package:ifind_backend/authscreens/landing1.dart';
+import 'package:ifind_backend/authscreens/landing2.dart';
+import 'package:ifind_backend/authscreens/landing3.dart';
 import 'package:ifind_backend/authscreens/login.dart';
 import 'package:ifind_backend/authscreens/signup.dart';
 import 'package:ifind_backend/authscreens/landing.dart';
@@ -21,7 +24,10 @@ void main() {
     initialRoute: '/',
     routes: {
       '/login': (context) => Login(),
-      '/': (context) => Landing(),
+      '/':(context) => Landing1(),
+      '/landing2':(context) => Landing2(),
+      '/landing3':(context) => Landing3(),
+      '/landing': (context) => Landing(),
       '/profile': (context) => Profile(),
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
@@ -33,6 +39,7 @@ void main() {
       '/settings': (context) => Setting(),
       '/logo': (context) => Logo(),
       '/account': (context) => User(),
+
 
 
     },

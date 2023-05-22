@@ -93,7 +93,7 @@ class _MissingState extends State<Missing> {
             backgroundColor: Colors.teal,
             label: 'profile',
             icon: IconButton(
-              icon: Icon(Icons.shopping_bag),
+              icon: Icon(Icons.person),
               iconSize: 30,
               onPressed: ()=>{
                 Navigator.pushNamed(context, '/account')
@@ -136,7 +136,7 @@ class _MissingState extends State<Missing> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +170,7 @@ class _MissingState extends State<Missing> {
                           icon: Icon(Icons.notifications_active),
                           iconSize: 35,
                         ),
-                        SizedBox(width: 12,),
+                        SizedBox(width: 8.0,),
                         Container(
                           decoration: const BoxDecoration(
                             color: Colors.black12,
@@ -180,7 +180,7 @@ class _MissingState extends State<Missing> {
                             Navigator.pushNamed(context, '/account')
                           },
                             icon: Icon(Icons.person),
-                            iconSize: 50,
+                            iconSize: 35,
                           ),
                         )
                       ],
@@ -203,7 +203,24 @@ class _MissingState extends State<Missing> {
                     controller: searchController,
                     decoration:   InputDecoration(
                         suffixIcon: IconButton(
-                            onPressed: ()=>{},
+                            onPressed: ()=>{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                            content: Row(
+                            children: [
+                            Icon(Icons.error_outline, color: Colors.red),
+                            SizedBox(width: 10),
+                            Text('no search found',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red)),
+                            ],
+                            ),
+                            backgroundColor: Colors.white,
+                            duration: Duration(seconds: 5),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            ),
+                            )
+                            },
                             icon: Icon(Icons.search)),
                         border: InputBorder.none,
                         hintText: 'search for an item with keywords eg books',
@@ -310,7 +327,7 @@ class _MissingState extends State<Missing> {
                                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Detailfound(item_id: founds![index].item_id ?? 1)));
                                           },
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.all(6.0),
                                             child: Container(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +356,7 @@ class _MissingState extends State<Missing> {
                                                     child: Text(founds![index].updated?.substring(0,9) ?? "",
                                                       style: TextStyle(
                                                         color: Colors.black,
-                                                        fontSize: 12,
+                                                        fontSize: 10,
                                                       ),
                                                     ),
                                                   )

@@ -35,13 +35,14 @@ class _ContactState extends State<Contact> {
     );
 
     if (response.statusCode==201){
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
               Icon(Icons.check_circle, color: Colors.white),
               SizedBox(width: 10),
-              Text('Success! your message has been sent,always check notification for reply',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+              Text('message sent',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
             ],
           ),
           backgroundColor: Colors.green,
@@ -100,7 +101,7 @@ class _ContactState extends State<Contact> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder<Author?>(
           future: getdata(),
@@ -308,7 +309,7 @@ class _ContactState extends State<Contact> {
                                     child: TextFormField(
                                       controller: messageController,
                                       decoration: InputDecoration(
-                                          hintText: 'type a message to the author',
+                                          hintText: 'type a message e:g please it is mine i have proves',
                                           border: InputBorder.none
                                       ),
                                     ),

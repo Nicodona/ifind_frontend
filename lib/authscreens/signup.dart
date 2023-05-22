@@ -64,8 +64,24 @@ class _SignupState extends State<Signup> {
 
         var data = jsonDecode(response.body.toString());
         if (response.statusCode == 201) {
-          print('register successful');
+
           Navigator.pushNamed(context, '/login');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 10),
+                  Text('your account has been created, login',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 5),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+          );
 
 
         } else if(response.statusCode==400){
@@ -132,7 +148,7 @@ class _SignupState extends State<Signup> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 155),
+                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 150),
                     child: Container(
                       child: const Text("Signup",
                         style: TextStyle(

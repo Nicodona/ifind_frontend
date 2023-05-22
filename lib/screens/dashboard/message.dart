@@ -54,7 +54,7 @@ class _MessagingState extends State<Messaging> {
               children: [
                 Icon(Icons.check_circle, color: Colors.white),
                 SizedBox(width: 10),
-                Text('reply sent,check notification for new messages',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+                Text('reply sent,check notification messages',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
               ],
             ),
             backgroundColor: Colors.green,

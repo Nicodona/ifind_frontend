@@ -68,9 +68,50 @@ class _LoginState extends State<Login> {
           await storage.write(key: 'username', value: username);
           await storage.write(key: 'id', value: id.toString());
           Navigator.pushNamed(context, '/found');
-          print('login successful');
-        } else if(data['status']==100){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 10),
+                  Text('succesfully log in, you can find your lost now',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 5),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+          );
+
+        }
+        else if(data['status']==100){
+          print(data['token']);
+          final token = data['token'];
+          final username = data['username'];
+          final id = data['id'];
+
+          await storage.write(key: 'token', value: token);
+          await storage.write(key: 'username', value: username);
+          await storage.write(key: 'id', value: id.toString());
           Navigator.pushNamed(context, '/profile');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.check_circle, color: Colors.white),
+                  SizedBox(width: 10),
+                  Text('you are now login, complete your profile',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white)),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 5),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+          );;
         }
         else if(data['status']==400){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Padding(

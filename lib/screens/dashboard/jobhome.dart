@@ -126,7 +126,7 @@ class _FindJobState extends State<FindJob> {
                       children: [
                         IconButton(onPressed: () => {},
                           icon: Icon(Icons.notifications_sharp),
-                          iconSize: 35,
+                          iconSize: 25,
                         ),
                         SizedBox(width: 12,),
                         Container(
@@ -136,7 +136,7 @@ class _FindJobState extends State<FindJob> {
                           ),
                           child: IconButton(onPressed: () => {},
                             icon: Icon(Icons.person),
-                            iconSize: 50,
+                            iconSize: 35,
                           ),
                         )
                       ],
@@ -208,82 +208,82 @@ class _FindJobState extends State<FindJob> {
                 ),
 
               ),
+                Center()
 
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: Colors.brown[50],
-                ),
-
-                height: 100,
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                    children: [
-                      Stack(
-                        children: [
-
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(25)),
-                              child: Image.asset('assets/images/building.jpeg',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text('Bag',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  width: 210,
-                                  child: Text(
-                                    'write another thing that you want to post sp that others that are ;ooking forit will find it',
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 13
-                                    ),
-                                  ),
-                                ),
-
-                                Padding(
-                                  padding: EdgeInsets.only(left: 75),
-                                  child: Text('12/3/2013 7:45:25:2233',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-
-
-                    ]
-                ),
-
-
-              )
+              // Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(25),
+              //     color: Colors.brown[50],
+              //   ),
+              //
+              //   height: 100,
+              //   margin: EdgeInsets.symmetric(vertical: 20),
+              //   child: Row(
+              //       children: [
+              //         Stack(
+              //           children: [
+              //
+              //             Container(
+              //               child: ClipRRect(
+              //                 borderRadius: BorderRadius.all(
+              //                     Radius.circular(25)),
+              //                 child: Image.asset('assets/images/building.jpeg',
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         SizedBox(height: 5,),
+              //
+              //         Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: InkWell(
+              //             onTap: () {},
+              //             child: Container(
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: const [
+              //                   Text('Bag',
+              //                     style: TextStyle(
+              //                         color: Colors.black,
+              //                         fontWeight: FontWeight.bold,
+              //                         fontSize: 15
+              //                     ),
+              //                   ),
+              //
+              //                   SizedBox(
+              //                     width: 210,
+              //                     child: Text(
+              //                       'write another thing that you want to post sp that others that are ;ooking forit will find it',
+              //                       maxLines: 4,
+              //                       overflow: TextOverflow.ellipsis,
+              //                       style: TextStyle(
+              //                           fontSize: 13
+              //                       ),
+              //                     ),
+              //                   ),
+              //
+              //                   Padding(
+              //                     padding: EdgeInsets.only(left: 75),
+              //                     child: Text('12/3/2013',
+              //                       style: TextStyle(
+              //                         color: Colors.black,
+              //                         fontSize: 12,
+              //                       ),
+              //                     ),
+              //                   )
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         )
+              //
+              //
+              //       ]
+              //   ),
+              //
+              //
+              // )
             ],
           ),
         ),

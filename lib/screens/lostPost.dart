@@ -7,6 +7,7 @@ import 'package:ifind_backend/custom/color.dart';
 import 'package:ifind_backend/custom/borderBox.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class Post extends StatefulWidget {
   const Post({Key? key}) : super(key: key);
@@ -53,7 +54,7 @@ class _PostState extends State<Post> {
 
        request.fields['description'] = description;
        request.fields['category'] = _value.toString();
-       request.fields['mention'] = mention;
+       request.fields['mention'] = mention ?? 'No mention';
        request.fields['date_found'] = datefound;
        request.fields['place_found'] = placefound;
 
@@ -115,30 +116,78 @@ class _PostState extends State<Post> {
 
   //we can upload image from camera or from gallery based on parameter
   Future<void> _getImage() async {
-    final imagePicker = ImagePicker();
-    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+    PermissionStatus galleryPermissionStatus = await Permission.storage.request();
+    if (galleryPermissionStatus.isGranted){
+      final imagePicker = ImagePicker();
+      final image = await imagePicker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      setState(() {
-        _image = File(image.path);
-      });
+      if (image != null) {
+        setState(() {
+          _image = File(image.path);
+        });
+      }
+    }else{
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.red),
+              SizedBox(width: 10),
+              Text('please grant photo permission',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red)),
+            ],
+          ),
+          backgroundColor: Colors.white,
+          duration: Duration(seconds: 4),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        )
+    );
+
     }
   }
 
   Future<void> _getCamera() async {
-    final imagePicker = ImagePicker();
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
+    PermissionStatus cameraPermissionStatus = await Permission.camera.request();
+      if (cameraPermissionStatus.isGranted){
+        final imagePicker = ImagePicker();
+        final image = await imagePicker.pickImage(source: ImageSource.camera);
 
-    if (image != null) {
-      setState(() {
-        _image = File(image.path);
-      });
+        if (image != null) {
+          setState(() {
+            _image = File(image.path);
+          });
+      }else{
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.red),
+                  SizedBox(width: 10),
+                  Text('please grant permission or try again',maxLines: 4,overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red)),
+                ],
+              ),
+              backgroundColor: Colors.white,
+              duration: Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            )
+        );
+      }
+
     }
   }
 
-  List<String> options = ['Animal', 'Bag', 'Cloth', 'Device','Document', 'FoodStuff', 'Gadget','House Equipment', 'Identity Card', 'Man', 'Person', 'Phone'];
+  List<String> options = ['Animal', 'Bag', 'Cloth', 'Device','Document', 'FoodStuff', 'Gadget','House Equipment', 'Identity Card', 'Person', 'Phone'];
 
   String _value='Document';
+
+
+  //permission handlers
+
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +345,7 @@ class _PostState extends State<Post> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 75,
+                                      height: 70,
                                       child: Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
@@ -311,7 +360,7 @@ class _PostState extends State<Post> {
                                           controller: mentionController,
                                           decoration:  const InputDecoration(
                                             border: InputBorder.none,
-                                            hintText: 'Please Provide any information found on objects this information is hidden from users',
+                                            hintText: 'Please Provide any information or you can allow this field empty',
                                             hintStyle: TextStyle(
                                               color: Colors.grey
                                             )
@@ -323,7 +372,7 @@ class _PostState extends State<Post> {
 
                                     const Padding(padding:
                                     EdgeInsets.all(8.0),
-                                      child: Text('Date found',
+                                      child: Text('Date found/lost',
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -332,7 +381,7 @@ class _PostState extends State<Post> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 45,
+                                      height: 43,
                                       child: Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
@@ -359,7 +408,7 @@ class _PostState extends State<Post> {
 
                                     const Padding(padding:
                                     EdgeInsets.all(8.0),
-                                      child: Text('place found',
+                                      child: Text('place found/lost',
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.grey,
@@ -368,7 +417,7 @@ class _PostState extends State<Post> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 45,
+                                      height: 43,
                                       child: Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
