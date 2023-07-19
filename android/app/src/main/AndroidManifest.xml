@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ifind_backend">
+    package="com.ifind.ifind_backend">
    <application
         android:label="ifind"
         android:name="${applicationName}"

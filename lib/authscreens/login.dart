@@ -67,6 +67,7 @@ class _LoginState extends State<Login> {
           await storage.write(key: 'token', value: token);
           await storage.write(key: 'username', value: username);
           await storage.write(key: 'id', value: id.toString());
+
           Navigator.pushNamed(context, '/found');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -152,6 +153,9 @@ class _LoginState extends State<Login> {
   }
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
       backgroundColor: Colors.teal,
 
@@ -160,10 +164,11 @@ class _LoginState extends State<Login> {
           children: [
             Container(
               color: Colors.transparent,
-              height: 100,
+              height: screenHeight*0.2,
             ),
             Container(
-              height: 900,
+              // height: 900,
+              height: screenHeight * 1.2,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
@@ -175,7 +180,8 @@ class _LoginState extends State<Login> {
                 children: [
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 160),
+                      // padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 80),
+                      padding:  EdgeInsets.symmetric(vertical: 10.0 + screenPadding.vertical, horizontal: 80.0 + screenPadding.horizontal),
                       child: Container(
                           child: const Text("Login",
                           style: TextStyle(
@@ -189,14 +195,14 @@ class _LoginState extends State<Login> {
                   Padding(padding: const EdgeInsets.all(8.0),
                   child: Form(
                     child: Container(
-                        width: 360,
+                        width: screenWidth*0.36,
                         height: (MediaQuery.of(context).size.height),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: Colors.white
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(5),
+                          padding:  EdgeInsets.all(5 + screenPadding.left),
                           child:  ListView(
                             children: <Widget>[
                               SizedBox(

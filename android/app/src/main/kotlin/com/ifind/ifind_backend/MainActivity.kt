@@ -1,4 +1,4 @@
-package com.example.ifind_backend
+package com.ifind.ifind_backend
 
 import io.flutter.embedding.android.FlutterActivity
 

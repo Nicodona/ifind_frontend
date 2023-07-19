@@ -126,6 +126,9 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenPadding = MediaQuery.of(context).padding;
     return Scaffold(
       backgroundColor: Colors.teal,
       body:  SingleChildScrollView(
@@ -133,10 +136,10 @@ class _SignupState extends State<Signup> {
           children: [
             Container(
               color: Colors.transparent,
-              height: 100,
+              height: screenHeight * 0.1,
             ),
             Container(
-              height: 900,
+              height: screenHeight*2.0,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
@@ -148,7 +151,7 @@ class _SignupState extends State<Signup> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 150),
+                    padding:  EdgeInsets.symmetric(vertical: 10 + screenPadding.vertical, horizontal: 80 + screenPadding.horizontal),
                     child: Container(
                       child: const Text("Signup",
                         style: TextStyle(

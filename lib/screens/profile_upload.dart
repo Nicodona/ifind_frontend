@@ -109,6 +109,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenPadding = MediaQuery.of(context).padding;
     return  Scaffold(
       // bottomNavigationBar: BottomNavigationBar(
       //   backgroundColor: Colors.teal,
@@ -122,10 +125,10 @@ class _ProfileState extends State<Profile> {
           children: [
             Container(
               color: Colors.transparent,
-              height: 85.0,
+              height: screenHeight*0.1,
             ),
             Container(
-              height: 700,
+              height: screenHeight*2.0,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
@@ -137,7 +140,7 @@ class _ProfileState extends State<Profile> {
                 children: [
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 150),
+                    padding:  EdgeInsets.symmetric(vertical: 15.0 + screenPadding.vertical, horizontal: 80 + screenPadding.horizontal),
                     child: Container(
                       child: const Text("Profile",
                         style: TextStyle(

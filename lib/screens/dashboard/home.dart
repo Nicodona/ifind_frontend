@@ -127,7 +127,7 @@ class _MissingState extends State<Missing> {
       body: SingleChildScrollView(
 
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
 
@@ -168,7 +168,7 @@ class _MissingState extends State<Missing> {
                           Navigator.pushNamed(context, '/notify')
                         },
                           icon: Icon(Icons.notifications_active),
-                          iconSize: 35,
+                          iconSize: 25,
                         ),
                         SizedBox(width: 8.0,),
                         Container(

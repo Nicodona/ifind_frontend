@@ -52,7 +52,7 @@ class _PostState extends State<Post> {
        var request = MultipartRequest('POST', Uri.parse('https://ifoundapi.herokuapp.com/addfound/'));
        request.files.add( await MultipartFile.fromPath('image', _image!.path));
 
-       request.fields['description'] = description;
+       request.fields['description'] = description ;
        request.fields['category'] = _value.toString();
        request.fields['mention'] = mention ?? 'No mention';
        request.fields['date_found'] = datefound;

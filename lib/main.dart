@@ -24,11 +24,11 @@ void main() {
     initialRoute: '/',
     routes: {
       '/login': (context) => Login(),
-      '/':(context) => Landing1(),
+      // '/':(context) => Landing1(),
       '/landing2':(context) => Landing2(),
       '/landing3':(context) => Landing3(),
       '/landing': (context) => Landing(),
-      '/profile': (context) => Profile(),
+      '/': (context) => Profile(),
       '/signup': (context) => Signup(),
       '/postlost': (context) => Post(),
       '/postJob': (context) => JobPost(),

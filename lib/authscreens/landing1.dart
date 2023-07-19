@@ -35,8 +35,7 @@ class _Landing1State extends State<Landing1> {
                 ),
                     Container(
                       child: const Text("ifind brings hope to dazed and stranded individuals, "
-                          "the platform is under development and this is the first prototype with less"
-                          " functionalities, please you can provide any information to test the platform, information provided will be available"
+                          " feel free to dig its functionalities, please you can provide any information to test the platform, information provided will be available"
                           " only within 24 hours. make sure you twerk around the properly and let your friends know about it",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -49,7 +48,7 @@ class _Landing1State extends State<Landing1> {
                   ],
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
               Container(
                 child: SizedBox(
                   height: 55,
